@@ -13,20 +13,24 @@
       >
         <i class="fa fa-bars"></i>
       </a>
-
+      
       <a href="#home" class="w3-bar-item w3-button">Home</a>
       
       <a href="#posts" class="w3-bar-item w3-button w3-hide-small">
         <i class="fa fa-th"></i> Posts
       </a>
-
+      
       <a href="#resume" class="w3-bar-item w3-button w3-hide-small">
         <i class="fa fa-th"></i> Résumé
       </a>
-
+      
+      <a href="#contact" class="w3-bar-item w3-button w3-hide-small">
+        <i class="fa fa-th"></i> Contact
+      </a>
+      
       <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-hover-red">
-            <i class="fa fa-search"></i>
-        </a>
+        <i class="fa fa-search"></i>
+      </a>
     </div>
 
     <div v-show="showMobileMenu" class="w3-bar-block w3-white w3-hide w3-hide-large w3-hide-medium">

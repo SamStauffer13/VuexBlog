@@ -1,14 +1,10 @@
 <template>
   <div id="app">
     <Navigation/>
-    <div v-show="loaded === false">
-      <Loader/>
-    </div>    
-    <div v-if="loaded === true">
-      <Welcome/>
-      <About/>
-      <Timeline/>
-    </div>
+    <Welcome/>
+    <About/>
+    <Timeline/>
+    <Goodbye/>
   </div>
 </template>
 
@@ -16,37 +12,27 @@
 import Navigation from "./components/Navigation.vue";
 import Welcome from "./components/Welcome.vue";
 import About from "./components/About.vue";
-import Loader from "./components/Loader.vue";
 import Timeline from "./components/Timeline.vue";
+import Goodbye from "./components/Goodbye.vue";
 
 export default {
   name: "app",
   components: {
     Navigation,
-    Loader,
     Welcome,
     About,
-    Timeline
-  },
-  data() {
-    return {
-      loaded: false
-    };
-  },
-  mounted() {
-    setTimeout(() => {
-      this.loaded = true;
-    }, 6000);
-    // axios
-    //   .get("https://samstauffer-3fcaa.firebaseio.com/projects.json")
-    //   .then(response => {this.projects = response.data;})
-    //   .catch(error => {});
+    Timeline,
+    Goodbye
   }
 };
 </script>
 
 <style lang="scss">
-#id{
-  font-family: "Lato", sans-serif
+#id {
+  font-family: "Lato", sans-serif;
+}
+
+div {
+  border: solid black 0px;
 }
 </style>

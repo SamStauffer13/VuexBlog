@@ -1,21 +1,24 @@
 <template>
-  <div class="timeline" id="posts">
-    <div
-      v-for="(project, index) in projects"
-      :key="project.title"
-      :class="index % 2 == 0 ? 'container left' : 'container right'"
-    >
-      <div class="content" :id="project.date">
-        <h4 :id="project.category">
-          <a style="text-decoration:none;" href="javascript:void(0)">{{project.category}}</a> |
-          <b>{{project.date}}</b>
-        </h4>
-        <img class="preview" v-if="project.image !== null" :src="project.image">
-        <h1 v-if="project.url !== null && project.url.length > 0">
-          <a :href="project.url">{{project.title}}</a>
-        </h1>
-        <h1 v-else>{{project.title}}</h1>
-        <p>{{project.description}}</p>
+  <div id="posts">
+    <Loader v-if="projects.length === 0"/>
+    <div v-else class="timeline">
+      <div
+        v-for="(project, index) in projects"
+        :key="project.title"
+        :class="index % 2 == 0 ? 'container left' : 'container right'"
+      >
+        <div class="content" :id="project.date">
+          <h4 :id="project.category">
+            <a style="text-decoration:none;" href="javascript:void(0)">{{project.category}}</a> |
+            <b>{{project.date}}</b>
+          </h4>
+          <img class="preview" v-if="project.image !== null" :src="project.image">
+          <h1 v-if="project.url !== null && project.url.length > 0">
+            <a :href="project.url">{{project.title}}</a>
+          </h1>
+          <h1 v-else>{{project.title}}</h1>
+          <p>{{project.description}}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -23,33 +26,41 @@
 
 <script>
 import axios from "axios";
+import Loader from "./Loader.vue";
+
 export default {
+  components: {
+    Loader
+  },
   data() {
     return {
       projects: []
     };
   },
-  mounted() {   
+  mounted() {
+    const getPosts = httpResponse => {
+      let jsonz = httpResponse.data;
+
+      jsonz.sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+
+      const isAfterHours = new Date().getHours() < 5;
+      
+      this.projects = jsonz.filter(post => {
+        return post.active === true || isAfterHours;
+      });
+    };
+
     axios
       .get("https://samstauffer-3fcaa.firebaseio.com/posts.json")
-      .then(response => {
-        let jsonz = response.data;
-
-        jsonz.sort((a, b) => {
-          return new Date(b.date) - new Date(a.date);
-        });
-
-        this.projects = jsonz.filter(post => {
-          return post.active === true;
-        });
-      })
-      .catch(error => {});
+      .then(getPosts)
+      .catch();
   }
 };
 </script>
 
 <style scoped lang="scss">
-
 .preview {
   max-width: 400px;
 }
